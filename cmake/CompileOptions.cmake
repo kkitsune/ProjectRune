@@ -37,7 +37,10 @@ set(DEFAULT_INCLUDE_DIRECTORIES)
 # Libraries
 # 
 
-set(DEFAULT_LIBRARIES)
+find_package(SFML REQUIRED COMPONENTS graphics window system)
+find_package(Boost REQUIRED COMPONENTS filesystem system)
+
+set(DEFAULT_LIBRARIES ${SFML_LIBRARIES} ${Boost_LIBRARIES})
 
 
 # 
@@ -85,6 +88,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
         /GL           # -> whole program optimization: enable link-time code generation (disables Zi)
         /GF           # -> enable string pooling
         >
+		
+		/DGLM_FORCE_RADIANS /DGLM_FORCE_SSE2
     )
 endif ()
 
@@ -123,6 +128,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_CXX_COMPILER_ID}" MATCH
         $<$<PLATFORM_ID:Darwin>:
             -pthread
         >
+		
+		-DGLM_FORCE_RADIANS -DGLM_FORCE_SSE2
     )
 endif ()
 
