@@ -1072,7 +1072,7 @@ struct ImDrawVert
 // You can override the vertex format layout by defining IMGUI_OVERRIDE_DRAWVERT_STRUCT_LAYOUT in imconfig.h
 // The code expect ImVec2 pos (8 bytes), ImVec2 uv (8 bytes), ImU32 col (4 bytes), but you can re-order them or add other fields as needed to simplify integration in your engine.
 // The type has to be described within the macro (you can either declare the struct or use a typedef)
-IMGUI_OVERRIDE_DRAWVERT_STRUCT_LAYOUT;
+IMGUI_OVERRIDE_DRAWVERT_STRUCT_LAYOUT
 #endif
 
 // Draw channels are used by the Columns API to "split" the render list into different channels while building, so items of each column can be batched together.

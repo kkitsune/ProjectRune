@@ -39,8 +39,13 @@ set(DEFAULT_INCLUDE_DIRECTORIES)
 
 find_package(SFML REQUIRED COMPONENTS graphics window system)
 find_package(Boost REQUIRED COMPONENTS filesystem system)
+find_package(opengl REQUIRED)
 
-set(DEFAULT_LIBRARIES ${SFML_LIBRARIES} ${Boost_LIBRARIES})
+set(DEFAULT_LIBRARIES ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES})
+
+if(WIN32)
+    set(DEFAULT_LIBRARIES ${DEFAULT_LIBRARIES} imm32)
+endif()
 
 
 # 

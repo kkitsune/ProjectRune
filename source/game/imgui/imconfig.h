@@ -24,7 +24,7 @@
 //#define IMGUI_DISABLE_TEST_WINDOWS
 
 //---- Don't define obsolete functions names
-//#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS
+#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS
 
 //---- Implement STB libraries in a namespace to avoid conflicts
 //#define IMGUI_STB_NAMESPACE     ImGuiStb
@@ -48,4 +48,11 @@ namespace ImGui
     void    Value(const char* prefix, const MyMatrix44& v, const char* float_format = NULL);
 }
 */
+
+#define IMGUI_OVERRIDE_DRAWVERT_STRUCT_LAYOUT struct ImDrawVert\
+{\
+    ImVec2  pos;\
+    ImU32   col;\
+    ImVec2  uv;\
+};
 

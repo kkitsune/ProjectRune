@@ -29,6 +29,8 @@ set(sources
     imgui/stb_rect_pack.h
     imgui/stb_textedit.h
     imgui/stb_truetype.h
+    imgui/sfml-events.h
+    imgui/sfml-rendering.h
 
     main.cpp
 )
