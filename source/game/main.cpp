@@ -17,6 +17,7 @@ int main(int, char**)
 	ImGui::SFML::SetWindow(app);
 	ImGui::SFML::InitImGuiEvents();
 
+	bool main_open = true;
 	while(app.isOpen())
 	{
 		ImGui::SFML::UpdateImGui();
@@ -28,19 +29,21 @@ int main(int, char**)
 			ImGui::SFML::ProcessEvent(e);
 			if(e.type == Event::KeyPressed && e.key.code == Keyboard::Escape)
 				app.close();
+			if(e.type == Event::Closed)
+				app.close();
 		}
 
-		bool tmp = true;
-		ImGui::Begin("window", &tmp);
+		ImGui::Begin("Main", &main_open, ImGuiWindowFlags_NoResize);
 		ImGui::Text("Hello, world!");
-		ImGui::Button("Is this working?!");
+		if (ImGui::Button("Exit"))
+			app.close();
 		ImGui::End();
 
-		app.clear(Color(64, 64, 64));
+		app.clear(Color(32, 32, 32));
 		ImGui::Render();
 		app.display();
 	}
-	
+
 	ImGui::SFML::Shutdown();
 	return 0;
 }
