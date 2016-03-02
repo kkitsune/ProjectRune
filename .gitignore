@@ -40,3 +40,4 @@ _start-cmd.bat
 # CLion directory
 .idea
 settings.js
+imgui.ini
