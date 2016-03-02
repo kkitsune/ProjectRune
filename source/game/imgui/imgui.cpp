@@ -9250,7 +9250,7 @@ void ImGui::ShowMetricsWindow(bool* opened)
                 {
                     if (pcmd->UserCallback)
                     {
-                        ImGui::BulletText("Callback %p, user_data %p", pcmd->UserCallback, pcmd->UserCallbackData);
+                        ImGui::BulletText("Callback %p, user_data %p", (void*) pcmd->UserCallback, pcmd->UserCallbackData);
                         continue;
                     }
                     ImGui::BulletText("Draw %-4d %s vtx, tex = %p, clip_rect = (%.0f,%.0f)..(%.0f,%.0f)", pcmd->ElemCount, draw_list->IdxBuffer.Size > 0 ? "indexed" : "non-indexed", pcmd->TextureId, pcmd->ClipRect.x, pcmd->ClipRect.y, pcmd->ClipRect.z, pcmd->ClipRect.w);
@@ -9281,7 +9281,7 @@ void ImGui::ShowMetricsWindow(bool* opened)
 
             static void NodeWindow(ImGuiWindow* window, const char* label)
             {
-                if (!ImGui::TreeNode(window, "%s '%s', %d @ 0x%p", label, window->Name, window->Active || window->WasActive, window))
+                if (!ImGui::TreeNode(window, "%s '%s', %d @ 0x%p", label, window->Name, window->Active || window->WasActive, (void*) window))
                     return;
                 NodeDrawList(window->DrawList, "DrawList");
                 if (window->RootWindow != window) NodeWindow(window->RootWindow, "RootWindow");
