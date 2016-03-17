@@ -1,49 +1,48 @@
-#include <SFML/Graphics.hpp>
-
-#include "imgui/imgui.h"
-#include "imgui/sfml-rendering.h"
-#include "imgui/sfml-events.h"
+#include "engine/Game.hpp"
 
 using namespace std;
 using namespace sf;
 
-int main(int, char**)
+class TestGame : public Game
 {
-	RenderWindow app(VideoMode(960, 640), "ProjectRune - Game", Style::Titlebar | Style::Close);
-	app.setVerticalSyncEnabled(true);
+public:
+	TestGame() : _main_open(false)
+	{ }
 
-	ImGui::SFML::SetRenderTarget(app);
-	ImGui::SFML::InitImGuiRendering();
-	ImGui::SFML::SetWindow(app);
-	ImGui::SFML::InitImGuiEvents();
-
-	bool main_open = true;
-	while(app.isOpen())
+	virtual void init(int argc, char** argv) override
 	{
-		ImGui::SFML::UpdateImGui();
-		ImGui::SFML::UpdateImGuiRendering();
-
-		Event e;
-		while(app.pollEvent(e))
-		{
-			ImGui::SFML::ProcessEvent(e);
-			if(e.type == Event::KeyPressed && e.key.code == Keyboard::Escape)
-				app.close();
-			if(e.type == Event::Closed)
-				app.close();
-		}
-
-		ImGui::Begin("Main", &main_open, ImGuiWindowFlags_NoResize);
-		ImGui::Text("Hello, world!");
-		if (ImGui::Button("Exit"))
-			app.close();
-		ImGui::End();
-
-		app.clear(Color(32, 32, 32));
-		ImGui::Render();
-		app.display();
+		Game::init(argc, argv);
 	}
 
-	ImGui::SFML::Shutdown();
-	return 0;
-}
+	virtual void frame_start() override
+	{
+		Game::frame_start();
+	}
+
+	virtual void process_event(sf::Event& e) override
+	{
+		Game::process_event(e);
+	}
+
+	virtual void update(Seconds delta_time) override
+	{
+		Game::update(delta_time);
+
+		ImGui::Begin("Main", &_main_open, ImGuiWindowFlags_NoResize);
+		ImGui::Text("Hello, world!");
+		if (ImGui::Button("Exit"))
+			quit(0);
+		ImGui::End();
+	}
+
+	virtual void frame_end() override
+	{
+		Game::frame_end();
+	}
+
+private:
+	bool _main_open;
+};
+
+int main(int argc, char** argv)
+{ return run<TestGame>(argc, argv); }
