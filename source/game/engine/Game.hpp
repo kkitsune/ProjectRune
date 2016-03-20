@@ -14,6 +14,14 @@ public:
 
 	virtual ~Game();
 
+	Game(Game const& other) = delete;
+
+	Game(Game&& other) = delete;
+
+	Game& operator=(Game const& other) = delete;
+
+	Game& operator=(Game&& other) = delete;
+
 	virtual int error_state() const final
 	{ return _error_state; }
 
