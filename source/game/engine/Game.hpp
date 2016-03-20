@@ -12,6 +12,8 @@ struct Game
 public:
 	Game();
 
+	virtual ~Game();
+
 	virtual int error_state() const final
 	{ return _error_state; }
 

@@ -9,6 +9,11 @@ Game::Game() : _error_state(0), _is_running(true)
 {
 }
 
+Game::~Game()
+{
+	ImGui::SFML::Shutdown();
+}
+
 void Game::quit(int errorCode)
 {
 	if (!is_running()) return;
@@ -16,7 +21,6 @@ void Game::quit(int errorCode)
 	_error_state = errorCode;
 	_is_running = false;
 	_window.close();
-	ImGui::SFML::Shutdown();
 }
 
 void Game::init(int, char**)
