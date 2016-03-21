@@ -1,3 +1,4 @@
+#include "engine/Script.hpp"
 #include "engine/Game.hpp"
 
 using namespace std;
@@ -18,7 +19,7 @@ public:
 	virtual void unload_resources() override
 	{ }
 
-	virtual void update(Seconds seconds1) override
+	virtual void update(Seconds) override
 	{
 		ImGui::Begin("Main", &_main_open, ImGuiWindowFlags_NoResize);
 		ImGui::Text("Hello, world!");

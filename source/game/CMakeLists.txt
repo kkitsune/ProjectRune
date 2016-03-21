@@ -38,6 +38,11 @@ set(sources
 	ctti/detail/string.hpp
 	ctti/type_id.hpp
 
+	engine/duktape/duk_config.h
+	engine/duktape/duktape.h
+	engine/duktape/duktape.c
+	engine/Script.hpp
+	engine/Script.cpp
 	engine/Time.hpp
 	engine/Game.hpp
 	engine/Game.cpp
