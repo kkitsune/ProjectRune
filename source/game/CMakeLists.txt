@@ -32,15 +32,15 @@ set(sources
     imgui/sfml-events.h
     imgui/sfml-rendering.h
 
-		ctti/detail/array.hpp
-		ctti/detail/hash.hpp
-		ctti/detail/pretty_function.hpp
-		ctti/detail/string.hpp
-		ctti/type_id.hpp
+	ctti/detail/array.hpp
+	ctti/detail/hash.hpp
+	ctti/detail/pretty_function.hpp
+	ctti/detail/string.hpp
+	ctti/type_id.hpp
 
-		engine/Time.hpp
-		engine/Game.hpp
-		engine/Game.cpp
+	engine/Time.hpp
+	engine/Game.hpp
+	engine/Game.cpp
 
     main.cpp
 )

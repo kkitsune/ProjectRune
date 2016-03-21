@@ -1,6 +1,9 @@
 #pragma once
 
 #include <type_traits>
+#include <functional>
+#include <utility>
+#include <vector>
 
 #include <SFML/Graphics.hpp>
 #include "../imgui/imgui.h"
@@ -44,6 +47,215 @@ private:
 	sf::RenderWindow _window;
 	int _error_state;
 	bool _is_running;
+};
+
+class GameState
+{
+	friend class GameStateStack;
+
+public:
+	GameState() : _game(nullptr)
+	{ }
+
+	virtual ~GameState()
+	{ }
+
+	GameState(GameState const& other) = delete;
+
+	GameState(GameState&& other) = delete;
+
+	GameState& operator=(GameState const& other) = delete;
+
+	GameState& operator=(GameState&& other) = delete;
+
+	virtual void init()
+	{ }
+
+	virtual void load_resources()
+	{ }
+
+	virtual void unload_resources()
+	{ }
+
+	virtual void update(Seconds)
+	{ }
+
+	virtual void render()
+	{ }
+
+	virtual void on_pause()
+	{ }
+
+	virtual void on_resume()
+	{ }
+
+protected:
+	virtual Game& game() final
+	{ return *_game; }
+
+	virtual Game const& game() const final
+	{ return *_game; }
+
+private:
+	Game* _game;
+};
+
+/// \brief An enumeration used for a stack
+///
+/// This describes different ways to push
+/// a game state on a stack
+enum class PushType
+{
+	/// Pushes on a new GameState,
+	/// without popping off the previous GameState
+	/// Acts like a regular stack push operation
+	PushWithoutPopping,
+
+	/// Pushes on a new GameState, and pops off the
+	/// previous GameState that was pushed on the stack
+	/// (if there is a previous GameState).
+	PushAndPop,
+
+	/// Pushes on a new GameState,
+	/// and pops off all previous states on the stack
+	PushAndPopAllPreviousStates,
+
+	/// Pushes on a new GameState, without popping off the last GameState
+	/// Unlike `PushWithoutPopping`, this enumeration makes it so that
+	/// the previous GameState is still updated, whilst the new GameState is updated
+	PushWithoutPoppingSilenty
+};
+
+class GameStateStackListener
+{
+public:
+	virtual ~GameStateStackListener()
+	{ }
+
+	virtual void on_gamestate_will_be_pushed(class GameStateStack& sender, GameState& state) = 0;
+
+	virtual void on_gamestate_was_pushed(class GameStateStack& sender, GameState& state) = 0;
+
+	virtual void on_gamestate_will_be_removed(class GameStateStack& sender, GameState& state) = 0;
+
+	virtual void on_stack_will_be_popped(class GameStateStack& sender) = 0;
+
+	virtual void on_stack_will_be_cleared(class GameStateStack& sender) = 0;
+};
+
+class GameStateStack
+{
+public:
+	GameStateStack(Game* game) : _game(game)
+	{ }
+
+	~GameStateStack()
+	{ clear(); }
+
+	GameStateStack(GameStateStack const& other) = default;
+
+	GameStateStack(GameStateStack&& other) = default;
+
+	GameStateStack& operator=(GameStateStack const& other) = default;
+
+	GameStateStack& operator=(GameStateStack&& other) = default;
+
+	template<PushType Push, class... Args>
+	void push(Args&&... args)
+	{
+		push(new GameState{std::forward<Args>(args)...}, Push);
+	}
+
+	void push(GameState* state, PushType pushType = PushType::PushWithoutPopping);
+
+	void pop();
+
+	void update(Seconds delta_time);
+
+	void render();
+
+	void clear();
+
+	void remove(GameState* state);
+
+	Game& game() const { return *_game; }
+
+	void add_listener(GameStateStackListener* listener);
+
+	void remove_listener(GameStateStackListener* listener);
+
+private:
+	template <typename F>
+	void perform_f_on_stack(F f)
+	{
+		// we're going to loop through the stack backwards
+		// if the top is silently pushed on, we will iterate again
+		for(size_t i = _stack.size(); i-- > 0;)
+		{
+			f(_stack[i].first.get());
+
+			// if we no longer need to continue to iterate
+			if(_stack[i].second != PushType::PushWithoutPoppingSilenty)
+				break;
+		}
+	}
+
+	struct GameStateDeleter
+	{
+		void operator()(GameState* state) const
+		{
+			state->unload_resources();
+			delete state;
+		}
+	};
+
+	typedef std::unique_ptr<GameState, GameStateDeleter> GameStatePtrImpl;
+	typedef std::pair<GameStatePtrImpl, PushType> GameStatePair;
+	typedef std::vector<GameStatePair> StackImpl;
+	typedef std::vector<GameStateStackListener*> ListenerArray;
+
+	ListenerArray _listeners;
+	StackImpl _stack;
+	Game* _game;
+};
+
+class StatedGame : public Game
+{
+public:
+	StatedGame() : _stack(this)
+	{ }
+
+	virtual ~StatedGame()
+	{ }
+
+	StatedGame(StatedGame const& other) = delete;
+
+	StatedGame(StatedGame&& other) = delete;
+
+	StatedGame& operator=(StatedGame const& other) = delete;
+
+	StatedGame& operator=(StatedGame&& other) = delete;
+
+	virtual GameStateStack& state_stack() final
+	{ return _stack; }
+
+	virtual const GameStateStack& state_stack() const final
+	{ return _stack; }
+
+	virtual void update(Seconds delta_time) override
+	{
+		_stack.update(delta_time);
+		Game::update(delta_time);
+	}
+
+	virtual void frame_end() override
+	{
+		_stack.render();
+		Game::frame_end();
+	}
+
+private:
+	GameStateStack _stack;
 };
 
 template<class GameType>
