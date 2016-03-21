@@ -6,7 +6,7 @@ using namespace sf;
 class TestGame : public Game
 {
 public:
-	TestGame() : _main_open(false)
+	TestGame() : _stack(this), _main_open(false)
 	{ }
 
 	virtual void init(int argc, char** argv) override
@@ -27,6 +27,7 @@ public:
 	virtual void update(Seconds delta_time) override
 	{
 		Game::update(delta_time);
+		_stack.update(delta_time);
 
 		ImGui::Begin("Main", &_main_open, ImGuiWindowFlags_NoResize);
 		ImGui::Text("Hello, world!");
@@ -37,10 +38,12 @@ public:
 
 	virtual void frame_end() override
 	{
+		_stack.render();
 		Game::frame_end();
 	}
 
 private:
+	GameStateStack _stack;
 	bool _main_open;
 };
 

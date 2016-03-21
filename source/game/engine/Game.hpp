@@ -219,45 +219,6 @@ private:
 	Game* _game;
 };
 
-class StatedGame : public Game
-{
-public:
-	StatedGame() : _stack(this)
-	{ }
-
-	virtual ~StatedGame()
-	{ }
-
-	StatedGame(StatedGame const& other) = delete;
-
-	StatedGame(StatedGame&& other) = delete;
-
-	StatedGame& operator=(StatedGame const& other) = delete;
-
-	StatedGame& operator=(StatedGame&& other) = delete;
-
-	virtual GameStateStack& state_stack() final
-	{ return _stack; }
-
-	virtual const GameStateStack& state_stack() const final
-	{ return _stack; }
-
-	virtual void update(Seconds delta_time) override
-	{
-		_stack.update(delta_time);
-		Game::update(delta_time);
-	}
-
-	virtual void frame_end() override
-	{
-		_stack.render();
-		Game::frame_end();
-	}
-
-private:
-	GameStateStack _stack;
-};
-
 template<class GameType>
 inline int run(int argc, char** argv)
 {
