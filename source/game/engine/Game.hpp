@@ -160,10 +160,10 @@ public:
 
 	GameStateStack& operator=(GameStateStack&& other) = default;
 
-	template<PushType Push, class... Args>
+	template<class StateT, PushType Push, class... Args>
 	void push(Args&&... args)
 	{
-		push(new GameState{std::forward<Args>(args)...}, Push);
+		push(new StateT{std::forward<Args>(args)...}, Push);
 	}
 
 	void push(GameState* state, PushType pushType = PushType::PushWithoutPopping);
