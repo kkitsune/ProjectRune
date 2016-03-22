@@ -1,4 +1,3 @@
-#include "engine/Script.hpp"
 #include "engine/Game.hpp"
 
 using namespace std;

@@ -26,22 +26,24 @@ set(DEFAULT_PROJECT_OPTIONS
 )
 
 
+find_package(SFML REQUIRED COMPONENTS graphics window system)
+find_package(Boost REQUIRED COMPONENTS filesystem system)
+find_package(opengl REQUIRED)
+find_package(lua REQUIRED)
+
+
 # 
 # Include directories
 # 
 
-set(DEFAULT_INCLUDE_DIRECTORIES)
+set(DEFAULT_INCLUDE_DIRECTORIES ${SFML_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${LUA_INCLUDE_DIR})
 
 
 # 
 # Libraries
-# 
+#
 
-find_package(SFML REQUIRED COMPONENTS graphics window system)
-find_package(Boost REQUIRED COMPONENTS filesystem system)
-find_package(opengl REQUIRED)
-
-set(DEFAULT_LIBRARIES ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES})
+set(DEFAULT_LIBRARIES ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${LUA_LIBRARIES})
 
 if(WIN32)
     set(DEFAULT_LIBRARIES ${DEFAULT_LIBRARIES} imm32)
