@@ -90,11 +90,19 @@ public:
 	{ }
 
 protected:
-	virtual Game& game() final
-	{ return *_game; }
+	template<class GameType>
+	GameType& game()
+	{
+		static_assert(std::is_base_of<Game, GameType>::value, "GameType must be a Game");
+		return *dynamic_cast<GameType*>(_game);
+	}
 
-	virtual Game const& game() const final
-	{ return *_game; }
+	template<class GameType>
+	Game const& game() const
+	{
+		static_assert(std::is_base_of<Game, GameType>::value, "GameType must be a Game");
+		return *dynamic_cast<GameType*>(_game);
+	}
 
 private:
 	Game* _game;
