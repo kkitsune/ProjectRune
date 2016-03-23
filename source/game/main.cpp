@@ -10,26 +10,15 @@ public:
 	TestState() : _main_open(false)
 	{ }
 
-	virtual void init() override
-	{ }
+	virtual void init() override;
 
-	virtual void load_resources() override
-	{ }
+	virtual void load_resources() override;
 
-	virtual void unload_resources() override
-	{ }
+	virtual void unload_resources() override;
 
-	virtual void update(Seconds) override
-	{
-		ImGui::Begin("Main", &_main_open, ImGuiWindowFlags_NoResize);
-		ImGui::Text("Hello, world!");
-		if (ImGui::Button("Exit"))
-			game().quit(0);
-		ImGui::End();
-	}
+	virtual void update(Seconds) override;
 
-	virtual void render() override
-	{ }
+	virtual void render() override;
 
 protected:
 	bool _main_open;
@@ -38,7 +27,7 @@ protected:
 class TestGame : public Game
 {
 public:
-	TestGame() : _stack(this)
+	TestGame() : _lua(true), _stack(this)
 	{ }
 
 	virtual void init(int argc, char** argv) override
@@ -69,9 +58,36 @@ public:
 		Game::frame_end();
 	}
 
+	sel::State& lua()
+	{ return _lua; }
+
 private:
+	sel::State _lua;
 	GameStateStack _stack;
 };
 
 int main(int argc, char** argv)
 { return run<TestGame>(argc, argv); }
+
+void TestState::init()
+{
+	game<TestGame>().lua()("print('Hello Lua!')");
+}
+
+void TestState::load_resources()
+{ }
+
+void TestState::unload_resources()
+{ }
+
+void TestState::update(Seconds)
+{
+	ImGui::Begin("Main", &_main_open, ImGuiWindowFlags_NoResize);
+	ImGui::Text("Hello, world!");
+	if (ImGui::Button("Exit"))
+		game<TestGame>().quit(0);
+	ImGui::End();
+}
+
+void TestState::render()
+{ }
