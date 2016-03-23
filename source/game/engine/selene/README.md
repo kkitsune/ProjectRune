@@ -1,4 +1,4 @@
-# Selene
+# [Selene](https://github.com/jeremyong/Selene)
 
 [![Build Status](https://travis-ci.org/jeremyong/Selene.svg?branch=master)](https://travis-ci.org/jeremyong/Selene)
 
