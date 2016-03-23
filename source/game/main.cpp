@@ -1,3 +1,4 @@
+#include "engine/selene/selene.h"
 #include "engine/Game.hpp"
 
 using namespace std;
