@@ -58,6 +58,9 @@ public:
 		Game::frame_end();
 	}
 
+	GameStateStack& stack()
+	{ return _stack; }
+
 	sel::State& lua()
 	{ return _lua; }
 
