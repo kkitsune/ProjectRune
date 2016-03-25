@@ -1,7 +1,7 @@
 #include "Game.hpp"
 
-#include "../imgui/sfml-rendering.h"
-#include "../imgui/sfml-events.h"
+#include "imgui/sfml-rendering.h"
+#include "imgui/sfml-events.h"
 
 using namespace sf;
 

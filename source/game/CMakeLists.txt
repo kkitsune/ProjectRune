@@ -21,22 +21,22 @@ message(STATUS "Rune ${target}")
 # 
 
 set(sources
-    imgui/imconfig.h
-    imgui/imgui.cpp
-    imgui/imgui.h
-    imgui/imgui_draw.cpp
-    imgui/imgui_internal.h
-    imgui/stb_rect_pack.h
-    imgui/stb_textedit.h
-    imgui/stb_truetype.h
-    imgui/sfml-events.h
-    imgui/sfml-rendering.h
+    engine/imgui/imconfig.h
+	engine/imgui/imgui.cpp
+	engine/imgui/imgui.h
+	engine/imgui/imgui_draw.cpp
+	engine/imgui/imgui_internal.h
+	engine/imgui/stb_rect_pack.h
+	engine/imgui/stb_textedit.h
+	engine/imgui/stb_truetype.h
+	engine/imgui/sfml-events.h
+	engine/imgui/sfml-rendering.h
 
-	ctti/detail/array.hpp
-	ctti/detail/hash.hpp
-	ctti/detail/pretty_function.hpp
-	ctti/detail/string.hpp
-	ctti/type_id.hpp
+	engine/ctti/detail/array.hpp
+	engine/ctti/detail/hash.hpp
+	engine/ctti/detail/pretty_function.hpp
+	engine/ctti/detail/string.hpp
+	engine/ctti/type_id.hpp
 
 	engine/selene/detail/BaseFun.h
 	engine/selene/detail/Class.h

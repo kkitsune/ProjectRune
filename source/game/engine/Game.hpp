@@ -6,7 +6,7 @@
 #include <vector>
 
 #include <SFML/Graphics.hpp>
-#include "../imgui/imgui.h"
+#include "imgui/imgui.h"
 
 #include "Time.hpp"
 
