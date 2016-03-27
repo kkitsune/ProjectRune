@@ -38,31 +38,7 @@ set(sources
 	engine/ctti/detail/string.hpp
 	engine/ctti/type_id.hpp
 
-	engine/selene/detail/BaseFun.h
-	engine/selene/detail/Class.h
-	engine/selene/detail/ClassFun.h
-	engine/selene/detail/Ctor.h
-	engine/selene/detail/Dtor.h
-	engine/selene/detail/ExceptionHandler.h
-	engine/selene/detail/ExceptionTypes.h
-	engine/selene/detail/Fun.h
-	engine/selene/detail/function.h
-	engine/selene/detail/LuaName.h
-	engine/selene/detail/LuaRef.h
-	engine/selene/detail/MetatableRegistry.h
-	engine/selene/detail/Obj.h
-	engine/selene/detail/ObjFun.h
-	engine/selene/detail/primitives.h
-	engine/selene/detail/references.h
-	engine/selene/detail/Registry.h
-	engine/selene/detail/ResourceHandler.h
-	engine/selene/detail/Selector.h
-	engine/selene/detail/State.h
-	engine/selene/detail/traits.h
-	engine/selene/detail/Tuple.h
-	engine/selene/detail/util.h
-	engine/selene/selene.h
-
+	engine/sol.hpp
 	engine/Time.hpp
 	engine/Game.hpp
 	engine/Game.cpp

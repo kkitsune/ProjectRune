@@ -1,5 +1,5 @@
-#include "engine/selene/selene.h"
 #include "engine/Game.hpp"
+#include "engine/sol.hpp"
 
 using namespace std;
 using namespace sf;
@@ -27,8 +27,10 @@ protected:
 class TestGame : public Game
 {
 public:
-	TestGame() : _lua(true), _stack(this)
-	{ }
+	TestGame() : _stack(this)
+	{
+		_lua.open_libraries(sol::lib::base, sol::lib::coroutine, sol::lib::math, sol::lib::string, sol::lib::table);
+	}
 
 	virtual void init(int argc, char** argv) override
 	{
@@ -61,11 +63,11 @@ public:
 	GameStateStack& stack()
 	{ return _stack; }
 
-	sel::State& lua()
+	sol::state& lua()
 	{ return _lua; }
 
 private:
-	sel::State _lua;
+	sol::state _lua;
 	GameStateStack _stack;
 };
 
@@ -74,7 +76,7 @@ int main(int argc, char** argv)
 
 void TestState::init()
 {
-	game<TestGame>().lua()("print('Hello Lua!')");
+	game<TestGame>().lua().script("print('Hello Lua!')");
 }
 
 void TestState::load_resources()
