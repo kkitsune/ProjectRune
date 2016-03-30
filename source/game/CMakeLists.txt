@@ -38,6 +38,7 @@ set(sources
 	engine/ctti/detail/string.hpp
 	engine/ctti/type_id.hpp
 
+	engine/ginseng.hpp
 	engine/sol.hpp
 	engine/Time.hpp
 	engine/Game.hpp

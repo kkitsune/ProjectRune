@@ -1,5 +1,9 @@
+#include <iostream>
+
 #include "engine/Game.hpp"
 #include "engine/sol.hpp"
+
+#include "engine/ginseng.hpp"
 
 using namespace std;
 using namespace sf;
@@ -21,6 +25,7 @@ public:
 	virtual void render() override;
 
 protected:
+	ginseng::Database<> _db;
 	bool _main_open;
 };
 
@@ -74,9 +79,24 @@ private:
 int main(int argc, char** argv)
 { return run<TestGame>(argc, argv); }
 
+struct Position
+{
+	Position(Vector2f const& p) : position(p)
+	{ }
+
+	Vector2f position;
+};
+
 void TestState::init()
 {
 	game<TestGame>().lua().script("print('Hello Lua!')");
+	auto e = _db.create_entity();
+	_db.create_component(e, Position{Vector2f{100, 100}});
+
+	_db.visit([](Position const& p)
+	          {
+		          cout << "Entity with position (" << p.position.x << ", " << p.position.y << ") visited" << endl;
+	          });
 }
 
 void TestState::load_resources()
