@@ -71,6 +71,9 @@ public:
 
 	GameState& operator=(GameState&& other) = delete;
 
+	virtual inline sf::RenderTarget& target() final
+	{ return _game->target(); }
+
 	virtual inline void init()
 	{ }
 
