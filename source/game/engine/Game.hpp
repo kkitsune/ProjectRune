@@ -25,11 +25,14 @@ public:
 
 	Game& operator=(Game&& other) = delete;
 
-	virtual int error_state() const final
+	virtual inline int error_state() const final
 	{ return _error_state; }
 
-	virtual bool is_running() const final
+	virtual inline bool is_running() const final
 	{ return _is_running; }
+
+	virtual inline sf::RenderTarget& target() final
+	{ return _window; }
 
 	virtual void quit(int errorCode = 0) final;
 
@@ -54,10 +57,10 @@ class GameState
 	friend class GameStateStack;
 
 public:
-	GameState() : _game(nullptr)
+	inline GameState() : _game(nullptr)
 	{ }
 
-	virtual ~GameState()
+	virtual inline ~GameState()
 	{ }
 
 	GameState(GameState const& other) = delete;
@@ -68,37 +71,37 @@ public:
 
 	GameState& operator=(GameState&& other) = delete;
 
-	virtual void init()
+	virtual inline void init()
 	{ }
 
-	virtual void load_resources()
+	virtual inline void load_resources()
 	{ }
 
-	virtual void unload_resources()
+	virtual inline void unload_resources()
 	{ }
 
-	virtual void update(Seconds)
+	virtual inline void update(Seconds)
 	{ }
 
-	virtual void render()
+	virtual inline void render()
 	{ }
 
-	virtual void on_pause()
+	virtual inline void on_pause()
 	{ }
 
-	virtual void on_resume()
+	virtual inline void on_resume()
 	{ }
 
 protected:
 	template<class GameType>
-	GameType& game()
+	inline GameType& game()
 	{
 		static_assert(std::is_base_of<Game, GameType>::value, "GameType must be a Game");
 		return *dynamic_cast<GameType*>(_game);
 	}
 
 	template<class GameType>
-	Game const& game() const
+	inline Game const& game() const
 	{
 		static_assert(std::is_base_of<Game, GameType>::value, "GameType must be a Game");
 		return *dynamic_cast<GameType*>(_game);
@@ -137,7 +140,7 @@ enum class PushType
 class GameStateStackListener
 {
 public:
-	virtual ~GameStateStackListener()
+	virtual inline ~GameStateStackListener()
 	{ }
 
 	virtual void on_gamestate_will_be_pushed(class GameStateStack& sender, GameState& state) = 0;
@@ -154,10 +157,10 @@ public:
 class GameStateStack
 {
 public:
-	GameStateStack(Game* game) : _game(game)
+	inline GameStateStack(Game* game) : _game(game)
 	{ }
 
-	~GameStateStack()
+	inline ~GameStateStack()
 	{ clear(); }
 
 	GameStateStack(GameStateStack const& other) = default;
@@ -169,7 +172,7 @@ public:
 	GameStateStack& operator=(GameStateStack&& other) = default;
 
 	template<class StateT, PushType Push, class... Args>
-	void push(Args&&... args)
+	inline void push(Args&&... args)
 	{
 		push(new StateT{std::forward<Args>(args)...}, Push);
 	}
@@ -194,7 +197,7 @@ public:
 
 private:
 	template <typename F>
-	void perform_f_on_stack(F f)
+	inline void perform_f_on_stack(F f)
 	{
 		// we're going to loop through the stack backwards
 		// if the top is silently pushed on, we will iterate again
@@ -210,7 +213,7 @@ private:
 
 	struct GameStateDeleter
 	{
-		void operator()(GameState* state) const
+		inline void operator()(GameState* state) const
 		{
 			state->unload_resources();
 			delete state;
@@ -228,7 +231,7 @@ private:
 };
 
 template<class GameType>
-inline int run(int argc, char** argv)
+static inline int run(int argc, char** argv)
 {
 	static_assert(std::is_base_of<Game, GameType>::value, "GameType must be a Game");
 	GameType app;
